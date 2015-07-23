@@ -158,13 +158,17 @@ module.exports.get = (function () {
                 return done(null, null);
             }
 
-            // Replace 'N/A' strings with null for simple checks in the return
-            // value.
-            Object.keys(movie).forEach(function (key) {
-                if (movie[key] === 'N/A') {
-                    movie[key] = null;
-                }
-            });
+            try{
+                // Replace 'N/A' strings with null for simple checks in the return
+                // value.
+                Object.keys(movie).forEach(function (key) {
+                    if (movie[key] === 'N/A') {
+                        movie[key] = null;
+                    }
+                });
+            } catch(e){
+                return done(e);
+            }
 
             // Beautify and normalize the ugly results the API returns.
             done(null, {
