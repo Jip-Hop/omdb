@@ -158,6 +158,13 @@ module.exports.get = (function () {
                 return done(null, null);
             }
 
+            // This is not a very safe solution to parsing malformed JSON, but it does parse JSON with unescaped backslashes, 
+            // unescaped unicode characters in the range of u0000 to u001f and cases of an escaped single quote.
+            // Solution from: http://stackoverflow.com/questions/17961303/why-does-json-parse-choke-on-encoded-characters-in-nodejs
+            if (typeof movie !== 'object'){
+                movie = new Function( 'return ' + movie )();
+            }
+            
             try{
                 // Replace 'N/A' strings with null for simple checks in the return
                 // value.
